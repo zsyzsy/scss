@@ -1,0 +1,51 @@
+//引入公用样式
+@import "public";
+//引入颜色样式
+@import "colour";
+
+
+
+html {
+  @include Family;
+  font-size: $browser-default-font-size;
+  @include color_size('','');
+}
+.header {
+  @include border(#fd1234);
+  @include WH(pxTorem(12px), pxTorem(120px));
+  @include pull-float(left);
+  font-size: pxTorem(12px);
+  @include font-size(18px);
+  @include padding(12px,22px,32px,42px);
+  @include margin(12px,22px,32px,42px);
+}
+//div垂直水平居中使用
+.parentNode {
+  width: 400px;
+  height: 400px;
+  background: #f00;
+  position: relative;
+  .childNode{
+    width: 200px;
+    height: 200px;
+    @include center;
+  }
+}
+div{
+  @include background_size();
+  @extend %bg-image;
+  width: Percentage(3);
+}
+p{
+  @include background_size();
+  width: 100px;
+  @extend %bg-image;
+}
+.ppp{
+  @include resolution(500px,768px){
+    width:multiplication(16px,12)
+  }
+  .colour_FF4500{
+    @include  colour(rgba($colour_FF3030,.9));
+  }
+}

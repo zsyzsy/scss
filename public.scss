@@ -1,0 +1,190 @@
+//默认字体
+@mixin Family{  //使用:@include Family;
+  font-family: "宋体" , sans-serif,'微软雅黑';
+}
+//rem
+//根字体默认大小
+$browser-default-font-size: 16px !default;//变量的值可以根据自己需求定义
+//$px为需要转换的字号
+@function pxTorem($px){   //使用:font-size: pxTorem(12px);
+  @return $px / $browser-default-font-size * 1rem;
+}
+
+@mixin font-size($fontSize){  //使用:@include font-size(12px);
+  font-size: ($fontSize / $browser-default-font-size) * 1rem;
+}
+
+//默认字体大小和字体颜色
+@mixin color_size($color, $fontSize) {  //使用:@include color_size('','');
+      color: white;
+      font-size:pxTorem(14px);
+  }
+//浮动
+@mixin pull-float($float){ //使用:@include pull-float(left);
+  float: $float;
+}
+//清除浮动
+@mixin clearfix {
+  //@if $legacy-support-for-ie {
+    *zoom: 1;
+  //}
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+    overflow: hidden;
+  }
+}
+%clearfix {
+  @include clearfix;
+}
+
+//文字上下居中
+@mixin text-center {  //@include text-center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+//宽高
+@mixin WH($width,$height){
+  width: $width;
+  height: $height;
+}
+//边框
+@mixin border($color){
+  border: 1px solid $color;
+}
+//圆角
+@mixin border-radius($top,$right,$bottom,$left){
+  border-radius:$top $right $bottom $left;
+}
+
+//div垂直水平居中
+
+//@mixin center {
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//}
+@mixin center($width:null,$height:null){  //使用方式:子集@include center;  父集:宽高加position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @if $width and $height {
+    // do margin
+    width: $width;
+    height: $height;
+    margin: -($height / 2) #{0 0} -($width / 2);   //这里如果直接写 0 0 他会编译为 margin: xx 0 xx 而不是 margin：xx 0 0 xx，所以用 #{0 0}
+
+  } @else if not $width and not $height {
+    // do transform translate(-50%,-50%)
+    transform: translate(-50%,-50%);
+  } @else if not $width {
+    // do margin-top and transform translateX
+    height: $height;
+    margin-top: -($height / 2);
+    transform: translateX(-50%);
+  } @else if not $height{
+    // do margin-left and transform translateY
+    width: $width;
+    margin-top: -($width / 2);
+    transform: translateY(-50%);
+  }
+}
+
+
+//padding
+@mixin padding($top,$right,$bottom,$left){
+ // padding:$top $right $bottom $left;  //使用:@include padding(pxTorem(12px),pxTorem(22px),pxTorem(32px),pxTorem(42px));
+  padding:pxTorem($top) pxTorem($right) pxTorem($bottom) pxTorem($left);  //@include padding(12px,22px,32px,42px);
+}
+//margin
+@mixin margin($top,$right,$bottom,$left){
+  margin:pxTorem($top) pxTorem($right) pxTorem($bottom) pxTorem($left);
+}
+//背景图片大小
+@mixin background_size($background-size:100% 100%){  //使用:@include background_size('');
+  background-size:$background-size;
+}
+//占位符  使用方法:@extend %bg-image;
+%bg-image{
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+//解决分辨率问题
+@mixin resolution($min_width,$max_width) {  //使用:选择器{@include resolution(500px,768px){分辨率下解决不同的问题}}
+    @media only screen and (min-width:$min_width) and (max-width:$max_width){
+        @content;
+      }
+ }
+//两数相乘
+@function multiplication($number,$n){   //使用:font-size: multiplication(12px,2);
+  @return pxTorem($number)*$n;
+}
+
+//百分比计算
+@function Percentage ($percentage) {
+  @return 100% / $percentage
+}
+
+//继承@extend
+/*
+.jicheng{
+  @extend div;  //继承div所有的样式
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//循环1
+//$k: 1;
+//$color: red, green, blue;
+//@each $c in $color {
+//  .div#{$k} {
+//    color: $c;
+//  }
+//  $k: $k + 1;
+//}
+//
+////循环2  遍历map $key表示键值, $val表示值
+//@each $key, $val in (default: green, dange: blue, error: red) {
+//  .alert-#{$key} {
+//    color: $val;
+//  }
+//}
+////循环3   $key表示键值,$color表示值
+//@each $key, $color in (default, green), (dange,blue), (error, red) {
+//  .aler-#{$key} {
+//    color: $color;
+//  }
+//}
+//
+//  //语法1:for $i from 1 to 10
+//  //此语句表示从1 到10,但是不包括10
+//  //语法2:for $i from 1 through 10
+//  //此语句表示从1到10,包括10
+//
+//@for $i from 1 through 3 {
+//  .span#{$i} {
+//    width: 20% * $i;
+//  }
+//}
+
+
